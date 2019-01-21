@@ -29,9 +29,6 @@ public class ZiXuanPage {
         action.longPress(po).release().perform();
         getCurrentDriver().findElement(remove).click();
         return this;
-
-
-
     }
 
     public ArrayList<String> getZiXuanList(){
@@ -41,6 +38,5 @@ public class ZiXuanPage {
         }
         return stockList;
     }
-
 
 }

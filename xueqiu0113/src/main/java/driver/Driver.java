@@ -14,20 +14,19 @@ public class Driver{
 
     public static void start() {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability("deviceName", "192.168.74.101:5555");
-        desiredCapabilities.setCapability("platformName", "Android");
-        desiredCapabilities.setCapability("appPackage", "com.xueqiu.android");
-        desiredCapabilities.setCapability("appActivity", ".view.WelcomeActivityAlias");
-        desiredCapabilities.setCapability("autoGrantPermissions", true);
-
+        GlobleConfig con= GlobleConfig.load("/data/globalConfig.yaml");
+        con.appcon.cap.keySet().forEach(key->{
+            Object value=con.appcon.cap.get(key);
+            desiredCapabilities.setCapability(key,value);
+        });
         URL remoteUrl=null;
         try {
-            remoteUrl = new URL("http://localhost:4723/wd/hub");
+            remoteUrl = new URL(con.appcon.url);
         }catch (MalformedURLException e){
             System.out.println(e.getMessage());
         }
         driver = new AndroidDriver(remoteUrl, desiredCapabilities);
-        driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(con.appcon.wait, TimeUnit.SECONDS);
     }
 
     public static AndroidDriver<AndroidElement> getCurrentDriver(){
